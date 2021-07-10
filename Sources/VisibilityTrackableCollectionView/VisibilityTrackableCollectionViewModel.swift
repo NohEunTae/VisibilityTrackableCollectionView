@@ -11,7 +11,7 @@ import Foundation
 
 extension VisibilityTrackableCollectionView {
     
-    final class ViewModel {
+    public class ViewModel {
         
         enum FullyVisibleState {
             typealias Data = (indexPaths: [IndexPath], type: VisibilityTrackableViewType)

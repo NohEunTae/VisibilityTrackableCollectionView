@@ -9,7 +9,7 @@
 #if os(iOS)
 import UIKit
 
-@objc protocol CollectionViewDelegateVisibleItems: UICollectionViewDelegate {
+@objc public protocol CollectionViewDelegateVisibleItems: UICollectionViewDelegate {
     @objc optional func collectionView(_ collectionView: UICollectionView, firstTimeOfFullyVisibleItems items: [IndexPath])
     @objc optional func collectionView(_ collectionView: UICollectionView, allOfFullyVisibleItems items: [IndexPath])
     @objc optional func collectionView(_ collectionView: UICollectionView, supplementaryElementOfKind kind: String, firstTimeOfFullyVisibleItems items: [IndexPath])
@@ -30,8 +30,35 @@ protocol VisibilityTrackableCollectionViewInterface: AnyObject {
     func fullyVisibleReusableIndexPaths(ofKind elementKind: String) -> [IndexPath]
 }
 
-class VisibilityTrackableCollectionView: UICollectionView, VisibilityTrackableCollectionViewInterface {
+open class VisibilityTrackableCollectionView: UICollectionView, VisibilityTrackableCollectionViewInterface {
     
+    /**
+     boundary 설정
+  
+     셀 노출 여부를 판단의 기준점으로 사용한다.
+     
+     미설정 시, 판단 기준점은 다음 두 가지 케이스로 나뉜다.
+        
+     &nbsp;
+     
+     VisibilityTrackableCollectionView가 중첩되지 않았거나, 제일 상위일 경우
+     
+        : 상위 ViewController의 view 기준으로 노출 여부 판단한다.
+     
+     &nbsp;
+     
+     VisibilityTrackableCollectionView 중첩되었으며, two depth 이상일 경우
+     
+        : 상위 VisibilityTrackableCollectionView를 찾아, 해당 boundary를 사용한다.
+     
+     - parameter boundary: 셀 노출 여부 판단에 사용할 경계
+     */
+    open func setBoundary(_ boundary: Boundary) {
+        boundaryManager.boundary = boundary
+    }
+    
+    private(set) lazy var boundaryManager = BoundaryManager(owner: self)
+
     private var viewModel = ViewModel() {
         didSet { bind() }
     }
@@ -40,7 +67,7 @@ class VisibilityTrackableCollectionView: UICollectionView, VisibilityTrackableCo
         delegate as? CollectionViewDelegateVisibleItems
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         super.init(coder: coder)
         bind()
     }
@@ -50,7 +77,7 @@ class VisibilityTrackableCollectionView: UICollectionView, VisibilityTrackableCo
         bind()
     }
     
-    override func dequeueReusableCell(withReuseIdentifier identifier: String, for indexPath: IndexPath) -> UICollectionViewCell {
+    open override func dequeueReusableCell(withReuseIdentifier identifier: String, for indexPath: IndexPath) -> UICollectionViewCell {
         let cell = super.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath)
         
         if let _ = cell as? InnerVisibilityTrackerInterface {
@@ -60,7 +87,7 @@ class VisibilityTrackableCollectionView: UICollectionView, VisibilityTrackableCo
         return cell
     }
     
-    override func dequeueReusableSupplementaryView(ofKind elementKind: String, withReuseIdentifier identifier: String, for indexPath: IndexPath) -> UICollectionReusableView {
+    open override func dequeueReusableSupplementaryView(ofKind elementKind: String, withReuseIdentifier identifier: String, for indexPath: IndexPath) -> UICollectionReusableView {
         let view = super.dequeueReusableSupplementaryView(ofKind: elementKind, withReuseIdentifier: identifier, for: indexPath)
         
         if let _ = view as? InnerVisibilityTrackerInterface {
@@ -76,17 +103,17 @@ class VisibilityTrackableCollectionView: UICollectionView, VisibilityTrackableCo
         return view
     }
     
-    override func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
         updateFullyVisibleItemsIfNeeded()
     }
 
-    func configure(viewModel: ViewModel) {
+    open func configure(viewModel: ViewModel) {
         self.viewModel = viewModel
         updateFullyVisibleItemsIfNeeded()
     }
     
-    func refreshSeenData() {
+    open func refreshSeenData() {
         viewModel.notiRefreshToAllInners(parent: self)
         viewModel.refreshSeenData()
         updateFullyVisibleItemsIfNeeded()

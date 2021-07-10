@@ -9,14 +9,14 @@
 #if os(iOS)
 import UIKit
 
-protocol InnerVisibilityTrackerInterface {
+public protocol InnerVisibilityTrackerInterface {
     var collectionViewInner: VisibilityTrackableCollectionView? { get }
     
     func configureInnerCollectionView(_ item: VisibilityTrackableCollectionView.ViewModel)
     func refreshSeenDataToInnerCollectionView()
 }
 
-extension InnerVisibilityTrackerInterface {
+public extension InnerVisibilityTrackerInterface {
     
     func configureInnerCollectionView(_ item: VisibilityTrackableCollectionView.ViewModel) {
         collectionViewInner?.configure(viewModel: item)
