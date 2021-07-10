@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "VisibilityTrackableCollectionView",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v11)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -24,8 +24,5 @@ let package = Package(
         .target(
             name: "VisibilityTrackableCollectionView",
             dependencies: []),
-        .testTarget(
-            name: "VisibilityTrackableCollectionViewTests",
-            dependencies: ["VisibilityTrackableCollectionView"]),
     ]
 )
