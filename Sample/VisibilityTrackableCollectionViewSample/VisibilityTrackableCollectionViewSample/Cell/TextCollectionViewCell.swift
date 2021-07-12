@@ -2,7 +2,7 @@
 //  TextCollectionViewCell.swift
 //  BrandiVisibilityTrackerSample
 //
-//  Created by Joongwon Kim on 2021/06/25.
+//  Created by NohEunTae on 2021/06/25.
 //
 
 import UIKit
