@@ -33,25 +33,26 @@ protocol VisibilityTrackableCollectionViewInterface: AnyObject {
 open class VisibilityTrackableCollectionView: UICollectionView, VisibilityTrackableCollectionViewInterface {
     
     /**
-     boundary 설정
-  
-     셀 노출 여부를 판단의 기준점으로 사용한다.
+     set boundary
+          
+     It is used as a reference point for determining whether the cell is visible or not.
      
-     미설정 시, 판단 기준점은 다음 두 가지 케이스로 나뉜다.
+     When not set, the reference point of judgement is divided into two cases:
         
      &nbsp;
      
-     VisibilityTrackableCollectionView가 중첩되지 않았거나, 제일 상위일 경우
+     If VisibilityTrackableCollectionView is not nested or is the top most
      
-        : 상위 ViewController의 view 기준으로 노출 여부 판단한다.
+        : It determines whether to expose based on the view of the parent ViewController.
      
      &nbsp;
      
-     VisibilityTrackableCollectionView 중첩되었으며, two depth 이상일 경우
+     If the VisibilityTrackableCollectionView is nested and has more than two depth
      
-        : 상위 VisibilityTrackableCollectionView를 찾아, 해당 boundary를 사용한다.
+        : Find the boundary of the parent VisibilityTrackableCollectionView to use as its own boundary
      
-     - parameter boundary: 셀 노출 여부 판단에 사용할 경계
+     - parameter boundary: Boundary to use to determine whether a cell is visible
+
      */
     open func setBoundary(_ boundary: Boundary) {
         boundaryManager.boundary = boundary
