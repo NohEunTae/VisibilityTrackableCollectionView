@@ -14,6 +14,7 @@ extension VisibilityTrackableCollectionView {
     final class InnerViewModel {
         let key: IndexPath
         var data = ViewModel()
+        var isNeedRefresh: Bool = false
         
         init(key: IndexPath) {
             self.key = key
