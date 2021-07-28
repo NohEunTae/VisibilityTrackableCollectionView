@@ -9,7 +9,7 @@
 #if os(iOS)
 import Foundation
 
-enum VisibilityTrackableViewType: CaseIterable {
+public enum VisibilityTrackableViewType: CaseIterable {
     case cell, header, footer
 }
 #endif
