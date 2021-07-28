@@ -44,7 +44,6 @@ extension VisibilityTrackableCollectionView {
         func refreshSeenData() {
             visibleItemManagers.forEach { $0.refreshSeenData() }
             infiniteVisibleItemManagers.forEach { $0.refreshSeenData() }
-            innerViewModelLists.forEach { $0.refresh() }
         }
         
         func refreshInfiniteItems(type: VisibilityTrackableViewType) {
