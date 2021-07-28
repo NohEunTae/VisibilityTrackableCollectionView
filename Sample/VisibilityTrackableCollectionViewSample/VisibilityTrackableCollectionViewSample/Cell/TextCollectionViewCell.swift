@@ -1,6 +1,6 @@
 //
 //  TextCollectionViewCell.swift
-//  BrandiVisibilityTrackerSample
+//  VisibilityTrackableCollectionViewSample
 //
 //  Created by NohEunTae on 2021/06/25.
 //
@@ -8,7 +8,6 @@
 import UIKit
 
 final class TextCollectionViewCell: UICollectionViewCell {
-    static let cellIdentifier: String = "TestCell"
     
     @IBOutlet private weak var labelTitle: UILabel!
 

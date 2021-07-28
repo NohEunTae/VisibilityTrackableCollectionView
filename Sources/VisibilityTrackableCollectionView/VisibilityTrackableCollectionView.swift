@@ -10,10 +10,43 @@
 import UIKit
 
 @objc public protocol CollectionViewDelegateVisibleItems: UICollectionViewDelegate {
-    @objc optional func collectionView(_ collectionView: UICollectionView, firstTimeOfFullyVisibleItems items: [IndexPath])
-    @objc optional func collectionView(_ collectionView: UICollectionView, allOfFullyVisibleItems items: [IndexPath])
-    @objc optional func collectionView(_ collectionView: UICollectionView, supplementaryElementOfKind kind: String, firstTimeOfFullyVisibleItems items: [IndexPath])
-    @objc optional func collectionView(_ collectionView: UICollectionView, supplementaryElementOfKind kind: String, allOfFullyVisibleItems items: [IndexPath])
+    
+    // Cell
+    @objc optional func collectionView(
+        _ collectionView: UICollectionView,
+        firstTimeOfFullyVisibleItems items: [IndexPath]
+    )
+    
+    @objc optional func collectionView(
+        _ collectionView: UICollectionView
+        , allOfFullyVisibleItems items: [IndexPath]
+    )
+    
+    // ReusableView
+    @objc optional func collectionView(
+        _ collectionView: UICollectionView,
+        supplementaryElementOfKind kind: String,
+        firstTimeOfFullyVisibleItems items: [IndexPath]
+    )
+    
+    @objc optional func collectionView(
+        _ collectionView: UICollectionView,
+        supplementaryElementOfKind kind: String,
+        allOfFullyVisibleItems items: [IndexPath]
+    )
+    
+    // Infinite
+    @objc optional func collectionView(
+        _ collectionView: UICollectionView,
+        infinityOfFullyVisibleItems items: [IndexPath]
+    )
+
+    @objc optional func collectionView(
+        _ collectionView: UICollectionView,
+        supplementaryElementOfKind kind: String,
+        infinityOfFullyVisibleItems items: [IndexPath]
+    )
+
 }
 
 protocol VisibilityTrackableCollectionViewInterface: AnyObject {
@@ -58,6 +91,18 @@ open class VisibilityTrackableCollectionView: UICollectionView, VisibilityTracka
         boundaryManager.boundary = boundary
     }
     
+    /// set Infinite
+    ///
+    /// Set for infinite scrolling.
+    /// If a section is duplicated, infiniteItem and seenData of the existing section are removed.
+    ///
+    /// - Parameters:
+    ///   - infiniteItem: the number of sections and items in the infinite scroll area
+    ///   - type: cell, header, footer
+    open func setInfiniteScroll(infiniteItem: InfiniteItem, type: VisibilityTrackableViewType) {
+        viewModel.setInfiniteScroll(infiniteItem: infiniteItem, type: type)
+    }
+    
     private(set) lazy var boundaryManager = BoundaryManager(owner: self)
 
     private var viewModel = ViewModel() {
@@ -73,7 +118,7 @@ open class VisibilityTrackableCollectionView: UICollectionView, VisibilityTracka
         bind()
     }
     
-    override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
+    public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         bind()
     }
@@ -119,6 +164,10 @@ open class VisibilityTrackableCollectionView: UICollectionView, VisibilityTracka
         viewModel.refreshSeenData()
         updateFullyVisibleItemsIfNeeded()
     }
+    
+    open func refreshInfiniteItems(type: VisibilityTrackableViewType) {
+        viewModel.refreshInfiniteItems(type: type)
+    }
 
     private func updateFullyVisibleItemsIfNeeded() {
         viewModel.updateInners(parent: self)
@@ -140,6 +189,8 @@ private extension VisibilityTrackableCollectionView {
                 self.fullyVisibleAll(indexPaths: data.indexPaths, type: data.type)
             case .first(let data):
                 self.fullyVisibleFirstTime(indexPaths: data.indexPaths, type: data.type)
+            case .infinite(let data):
+                self.fullyVisibleInfiniteItems(indexPaths: data.indexPaths, type: data.type)
             }
         }
     }
@@ -148,11 +199,22 @@ private extension VisibilityTrackableCollectionView {
         guard indexPaths.isNotEmpty else { return }
         switch type {
         case .cell:
-            delegateVisibleItems?.collectionView?(self, allOfFullyVisibleItems: indexPaths)
+            delegateVisibleItems?.collectionView?(
+                self,
+                allOfFullyVisibleItems: indexPaths
+            )
         case .header:
-            delegateVisibleItems?.collectionView?(self, supplementaryElementOfKind: SectionSupplement.header.rawValue, allOfFullyVisibleItems: indexPaths)
+            delegateVisibleItems?.collectionView?(
+                self,
+                supplementaryElementOfKind: SectionSupplement.header.rawValue,
+                allOfFullyVisibleItems: indexPaths
+            )
         case .footer:
-            delegateVisibleItems?.collectionView?(self, supplementaryElementOfKind: SectionSupplement.footer.rawValue, allOfFullyVisibleItems: indexPaths)
+            delegateVisibleItems?.collectionView?(
+                self,
+                supplementaryElementOfKind: SectionSupplement.footer.rawValue,
+                allOfFullyVisibleItems: indexPaths
+            )
         }
     }
     
@@ -160,11 +222,45 @@ private extension VisibilityTrackableCollectionView {
         guard indexPaths.isNotEmpty else { return }
         switch type {
         case .cell:
-            delegateVisibleItems?.collectionView?(self, firstTimeOfFullyVisibleItems: indexPaths)
+            delegateVisibleItems?.collectionView?(
+                self,
+                firstTimeOfFullyVisibleItems: indexPaths
+            )
         case .header:
-            delegateVisibleItems?.collectionView?(self, supplementaryElementOfKind: SectionSupplement.header.rawValue, firstTimeOfFullyVisibleItems: indexPaths)
+            delegateVisibleItems?.collectionView?(
+                self,
+                supplementaryElementOfKind: SectionSupplement.header.rawValue,
+                firstTimeOfFullyVisibleItems: indexPaths
+            )
         case .footer:
-            delegateVisibleItems?.collectionView?(self, supplementaryElementOfKind: SectionSupplement.footer.rawValue, firstTimeOfFullyVisibleItems: indexPaths)
+            delegateVisibleItems?.collectionView?(
+                self,
+                supplementaryElementOfKind: SectionSupplement.footer.rawValue,
+                firstTimeOfFullyVisibleItems: indexPaths
+            )
+        }
+    }
+
+    func fullyVisibleInfiniteItems(indexPaths: [IndexPath], type: VisibilityTrackableViewType) {
+        guard indexPaths.isNotEmpty else { return }
+        switch type {
+        case .cell:
+            delegateVisibleItems?.collectionView?(
+                self,
+                infinityOfFullyVisibleItems: indexPaths
+            )
+        case .header:
+            delegateVisibleItems?.collectionView?(
+                self,
+                supplementaryElementOfKind: SectionSupplement.header.rawValue,
+                infinityOfFullyVisibleItems: indexPaths
+            )
+        case .footer:
+            delegateVisibleItems?.collectionView?(
+                self,
+                supplementaryElementOfKind: SectionSupplement.footer.rawValue,
+                infinityOfFullyVisibleItems: indexPaths
+            )
         }
     }
 

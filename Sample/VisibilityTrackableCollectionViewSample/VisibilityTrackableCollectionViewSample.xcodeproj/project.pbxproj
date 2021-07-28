@@ -21,6 +21,13 @@
 		49A812F52699566D00F00044 /* DoubleDepthInnerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A812EF2699566D00F00044 /* DoubleDepthInnerCollectionViewCell.swift */; };
 		49A812F62699566D00F00044 /* DoubleDepthInnerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49A812F02699566D00F00044 /* DoubleDepthInnerCollectionViewCell.xib */; };
 		49A812F72699566D00F00044 /* TextCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49A812F12699566D00F00044 /* TextCollectionViewCell.xib */; };
+		49F54DC926B19B420057AF3E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 49F54DC826B19B420057AF3E /* SnapKit */; };
+		49F54DCC26B19BC70057AF3E /* NestedTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F54DCB26B19BC70057AF3E /* NestedTrackerViewController.swift */; };
+		49F54DCE26B19D1E0057AF3E /* NestedCollectionViewApater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F54DCD26B19D1E0057AF3E /* NestedCollectionViewApater.swift */; };
+		49F54DD126B19D860057AF3E /* Registrable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F54DD026B19D860057AF3E /* Registrable.swift */; };
+		49F54DD326B19E550057AF3E /* AnyNameable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F54DD226B19E550057AF3E /* AnyNameable.swift */; };
+		49F54DD626B1A2420057AF3E /* InfiniteScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F54DD526B1A2420057AF3E /* InfiniteScrollViewController.swift */; };
+		49F54DD826B1A2500057AF3E /* InfiniteScrollAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F54DD726B1A2500057AF3E /* InfiniteScrollAdapter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +46,12 @@
 		49A812EF2699566D00F00044 /* DoubleDepthInnerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleDepthInnerCollectionViewCell.swift; sourceTree = "<group>"; };
 		49A812F02699566D00F00044 /* DoubleDepthInnerCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DoubleDepthInnerCollectionViewCell.xib; sourceTree = "<group>"; };
 		49A812F12699566D00F00044 /* TextCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextCollectionViewCell.xib; sourceTree = "<group>"; };
+		49F54DCB26B19BC70057AF3E /* NestedTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NestedTrackerViewController.swift; sourceTree = "<group>"; };
+		49F54DCD26B19D1E0057AF3E /* NestedCollectionViewApater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NestedCollectionViewApater.swift; sourceTree = "<group>"; };
+		49F54DD026B19D860057AF3E /* Registrable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Registrable.swift; sourceTree = "<group>"; };
+		49F54DD226B19E550057AF3E /* AnyNameable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNameable.swift; sourceTree = "<group>"; };
+		49F54DD526B1A2420057AF3E /* InfiniteScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteScrollViewController.swift; sourceTree = "<group>"; };
+		49F54DD726B1A2500057AF3E /* InfiniteScrollAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteScrollAdapter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +60,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				49A812E726994F8100F00044 /* VisibilityTrackableCollectionView in Frameworks */,
+				49F54DC926B19B420057AF3E /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +88,9 @@
 		49A812CE26994EE200F00044 /* VisibilityTrackableCollectionViewSample */ = {
 			isa = PBXGroup;
 			children = (
+				49F54DCF26B19D4F0057AF3E /* Extensions */,
+				49F54DD426B1A2270057AF3E /* InfiniteScroll */,
+				49F54DCA26B19B680057AF3E /* Nested */,
 				49A812EB2699566D00F00044 /* Cell */,
 				49A812CF26994EE200F00044 /* AppDelegate.swift */,
 				49A812D126994EE200F00044 /* SceneDelegate.swift */,
@@ -106,6 +123,33 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		49F54DCA26B19B680057AF3E /* Nested */ = {
+			isa = PBXGroup;
+			children = (
+				49F54DCB26B19BC70057AF3E /* NestedTrackerViewController.swift */,
+				49F54DCD26B19D1E0057AF3E /* NestedCollectionViewApater.swift */,
+			);
+			path = Nested;
+			sourceTree = "<group>";
+		};
+		49F54DCF26B19D4F0057AF3E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				49F54DD026B19D860057AF3E /* Registrable.swift */,
+				49F54DD226B19E550057AF3E /* AnyNameable.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		49F54DD426B1A2270057AF3E /* InfiniteScroll */ = {
+			isa = PBXGroup;
+			children = (
+				49F54DD526B1A2420057AF3E /* InfiniteScrollViewController.swift */,
+				49F54DD726B1A2500057AF3E /* InfiniteScrollAdapter.swift */,
+			);
+			path = InfiniteScroll;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -124,6 +168,7 @@
 			name = VisibilityTrackableCollectionViewSample;
 			packageProductDependencies = (
 				49A812E626994F8100F00044 /* VisibilityTrackableCollectionView */,
+				49F54DC826B19B420057AF3E /* SnapKit */,
 			);
 			productName = VisibilityTrackableCollectionViewSample;
 			productReference = 49A812CC26994EE200F00044 /* VisibilityTrackableCollectionViewSample.app */;
@@ -152,6 +197,9 @@
 				Base,
 			);
 			mainGroup = 49A812C326994EE200F00044;
+			packageReferences = (
+				49F54DC726B19B420057AF3E /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = 49A812CD26994EE200F00044 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -183,12 +231,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49F54DD826B1A2500057AF3E /* InfiniteScrollAdapter.swift in Sources */,
+				49F54DCE26B19D1E0057AF3E /* NestedCollectionViewApater.swift in Sources */,
+				49F54DD626B1A2420057AF3E /* InfiniteScrollViewController.swift in Sources */,
 				49A812F52699566D00F00044 /* DoubleDepthInnerCollectionViewCell.swift in Sources */,
 				49A812D426994EE200F00044 /* ViewController.swift in Sources */,
+				49F54DCC26B19BC70057AF3E /* NestedTrackerViewController.swift in Sources */,
 				49A812F42699566D00F00044 /* SingleInnerCollectionViewCell.swift in Sources */,
 				49A812D026994EE200F00044 /* AppDelegate.swift in Sources */,
 				49A812D226994EE200F00044 /* SceneDelegate.swift in Sources */,
+				49F54DD126B19D860057AF3E /* Registrable.swift in Sources */,
 				49A812F32699566D00F00044 /* TextCollectionViewCell.swift in Sources */,
+				49F54DD326B19E550057AF3E /* AnyNameable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,10 +445,26 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		49F54DC726B19B420057AF3E /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = exactVersion;
+				version = 5.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		49A812E626994F8100F00044 /* VisibilityTrackableCollectionView */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = VisibilityTrackableCollectionView;
+		};
+		49F54DC826B19B420057AF3E /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 49F54DC726B19B420057AF3E /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
