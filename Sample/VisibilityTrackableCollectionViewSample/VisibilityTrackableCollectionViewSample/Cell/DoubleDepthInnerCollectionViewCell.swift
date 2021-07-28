@@ -1,6 +1,6 @@
 //
 //  DoubleDepthInnerCollectionViewCell.swift
-//  BrandiVisibilityTrackerSample
+//  VisibilityTrackableCollectionViewSample
 //
 //  Created by NohEunTae on 2021/07/01.
 //
@@ -9,7 +9,6 @@ import UIKit
 import VisibilityTrackableCollectionView
 
 final class DoubleDepthInnerCollectionViewCell: UICollectionViewCell, InnerVisibilityTrackerInterface {
-    static let cellIdentifier: String = "DoubleDepthInnerCell"
 
     var collectionViewInner: VisibilityTrackableCollectionView? { collectionView }
     
@@ -18,7 +17,7 @@ final class DoubleDepthInnerCollectionViewCell: UICollectionViewCell, InnerVisib
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        collectionView.register(UINib(nibName: "SingleInnerCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: SingleInnerCollectionViewCell.cellIdentifier)
+        collectionView.registerCellXib(cellClass: SingleInnerCollectionViewCell.self)
         collectionView.dataSource = self
         collectionView.delegate = self
     }
@@ -32,8 +31,10 @@ extension DoubleDepthInnerCollectionViewCell: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SingleInnerCollectionViewCell.cellIdentifier, for: indexPath) as? SingleInnerCollectionViewCell else { return .init() }
-        return cell
+        collectionView.dequeueReusableCell(
+            withReuseIdentifier: SingleInnerCollectionViewCell.className
+            , for: indexPath
+        )
     }
 }
 
