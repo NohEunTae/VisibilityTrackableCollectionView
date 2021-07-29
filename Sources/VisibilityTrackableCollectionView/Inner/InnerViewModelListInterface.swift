@@ -18,9 +18,17 @@ protocol InnerViewModelListInterface: AnyObject {
     func findInnerItem(using key: IndexPath) -> VisibilityTrackableCollectionView.InnerViewModel?
     func updateInnerCollectionFullyVisible(using parent: VisibilityTrackableCollectionViewInterface)
     func notiRefreshToInner(using parent: VisibilityTrackableCollectionViewInterface?)
+    func notiRefreshToInner(
+        using parent: VisibilityTrackableCollectionViewInterface?,
+        sections: [Int]
+    )
     func reload(using parent: VisibilityTrackableCollectionViewInterface?, at key: IndexPath)
     func refresh()
     func addInnerItemIfNotContains(_ key: IndexPath)
+    func findInnerVisibilityTracker(
+        using inner: InnerViewModel,
+        in parent: VisibilityTrackableCollectionViewInterface?
+    ) -> InnerVisibilityTrackerInterface?
     func findInnerVisibilityTracker(
         parent: VisibilityTrackableCollectionViewInterface?,
         key: IndexPath
@@ -57,7 +65,38 @@ extension InnerViewModelListInterface {
         removeInner(inner: inner)
     }
 
-    func removeInner(inner: InnerViewModel) {
+    func notiRefreshToInner(using parent: VisibilityTrackableCollectionViewInterface?) {
+        var removeItems: [InnerViewModel] = []
+        inners.forEach {
+            guard let innerTracker = findInnerVisibilityTracker(using: $0, in: parent) else {
+                $0.isNeedRefresh = true
+                return
+            }
+            innerTracker.refreshSeenDataToInnerCollectionView()
+            $0.data.refreshSeenData()
+            removeItems.append($0)
+        }
+        
+        removeItems.forEach { removeInner(inner: $0) }
+    }
+    
+    func notiRefreshToInner(using parent: VisibilityTrackableCollectionViewInterface?, sections: [Int]) {
+        let removeInners = inners.filter { sections.contains($0.key.section) }
+        var removeItems: [InnerViewModel] = []
+        removeInners.forEach {
+            guard let innerTracker = findInnerVisibilityTracker(using: $0, in: parent) else {
+                $0.isNeedRefresh = true
+                return
+            }
+            innerTracker.refreshSeenDataToInnerCollectionView()
+            $0.data.refreshSeenData()
+            removeItems.append($0)
+        }
+        
+        removeItems.forEach { removeInner(inner: $0) }
+    }
+
+    private func removeInner(inner: InnerViewModel) {
         inners = inners.filter { $0.key != inner.key }
     }
 
@@ -68,5 +107,18 @@ extension InnerViewModelListInterface {
         innerTracker.configureInnerCollectionView(inner.data)
     }
     
+    func reload(
+        using parent: VisibilityTrackableCollectionViewInterface?
+        , at key: IndexPath
+    ) {
+        guard let inner = inners.first(where: { $0.key == key })
+              , let innerTracker = findInnerVisibilityTracker(using: inner, in: parent)
+        else {
+            return
+        }
+            
+        innerTracker.configureInnerCollectionView(inner.data)
+    }
+
 }
 #endif

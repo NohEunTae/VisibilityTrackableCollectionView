@@ -165,6 +165,12 @@ open class VisibilityTrackableCollectionView: UICollectionView, VisibilityTracka
         updateFullyVisibleItemsIfNeeded()
     }
     
+    open func refreshSections(_ sections: [Int]) {
+        viewModel.notiRefreshToAllInners(parent: self, sections: sections)
+        viewModel.refreshSections(sections)
+        updateFullyVisibleItemsIfNeeded()
+    }
+    
     open func refreshInfiniteItems(type: VisibilityTrackableViewType) {
         viewModel.refreshInfiniteItems(type: type)
     }

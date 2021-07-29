@@ -40,7 +40,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="EkG-Sb-Tr7"/>
                                         </constraints>
-                                        <state key="normal" title="Test nested collection view"/>
+                                        <state key="normal" title="Test nested collection view &amp; refresh"/>
                                         <connections>
                                             <action selector="testNestedDidClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="AJl-1p-k9T"/>
                                         </connections>

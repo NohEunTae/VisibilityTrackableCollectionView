@@ -10,7 +10,7 @@ import VisibilityTrackableCollectionView
 
 final class NestedCollectionViewApater: NSObject {
     
-    private enum Section: Int, CaseIterable {
+    enum Section: Int, CaseIterable {
         case normal1
         case doubleDepthInner
         case normal2
