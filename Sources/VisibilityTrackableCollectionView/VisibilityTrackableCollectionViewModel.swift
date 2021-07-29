@@ -46,6 +46,12 @@ extension VisibilityTrackableCollectionView {
             infiniteVisibleItemManagers.forEach { $0.refreshSeenData() }
         }
         
+        func refreshSections(_ sections: [Int]) {
+            (visibleItemManagers + infiniteVisibleItemManagers).forEach {
+                $0.refreshSections(sections)
+            }
+        }
+        
         func refreshInfiniteItems(type: VisibilityTrackableViewType) {
             infiniteVisibleItemManagers
                 .first { $0.type == type }?
@@ -74,6 +80,12 @@ extension VisibilityTrackableCollectionView {
             }
         }
         
+        func notiRefreshToAllInners(parent: VisibilityTrackableCollectionViewInterface?, sections: [Int]) {
+            innerViewModelLists.forEach { innerViewModelList in
+                innerViewModelList.notiRefreshToInner(using: parent, sections: sections)
+            }
+        }
+
         func updateVisibleItems(current: VisibilityTrackableCollectionViewInterface) {
             visibleItemManagers.forEach {
                 visibleState?(.first($0.updateFullyVisibleItemsFirstAppeared(in: current)))

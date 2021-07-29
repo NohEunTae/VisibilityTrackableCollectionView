@@ -56,38 +56,11 @@ extension VisibilityTrackableCollectionView {
             return (view, inner)
         }
 
-        func notiRefreshToInner(using parent: VisibilityTrackableCollectionViewInterface?) {
-            var removeItems: [InnerViewModel] = []
-            inners.forEach {
-                guard
-                    let view = parent?.supplementaryView(
-                        forElementKind: kind,
-                        at: $0.key
-                    ) as? InnerVisibilityTrackerInterface
-                else {
-                    $0.isNeedRefresh = true
-                    return
-                }
-                view.refreshSeenDataToInnerCollectionView()
-                $0.data.refreshSeenData()
-                removeItems.append($0)
-            }
-            
-            removeItems.forEach { removeInner(inner: $0) }
-        }
-        
-        func reload(using parent: VisibilityTrackableCollectionViewInterface?, at key: IndexPath) {
-            guard
-                let inner = inners.first(where: { $0.key == key }),
-                let view = parent?.supplementaryView(
-                    forElementKind: kind,
-                    at: inner.key
-                ) as? InnerVisibilityTrackerInterface
-            else {
-                return
-            }
-            
-            view.configureInnerCollectionView(inner.data)
+        func findInnerVisibilityTracker(
+            using inner: InnerViewModel,
+            in parent: VisibilityTrackableCollectionViewInterface?
+        ) -> InnerVisibilityTrackerInterface? {
+            parent?.supplementaryView(forElementKind: kind, at: inner.key) as? InnerVisibilityTrackerInterface
         }
         
     }

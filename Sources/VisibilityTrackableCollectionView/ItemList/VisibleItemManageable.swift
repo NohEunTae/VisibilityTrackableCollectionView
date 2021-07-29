@@ -24,6 +24,10 @@ protocol VisibleItemManageable: AnyObject {
 extension VisibleItemManageable {
     func refreshSeenData() { items = [] }
     
+    func refreshSections(_ sections: [Int]) {
+        items = items.filter { !sections.contains($0.section) }
+    }
+
     func firstAppearedItems(in current: VisibilityTrackableCollectionViewInterface) -> [IndexPath] {
         fullyVisibleIndexPaths(in: current)
             .filter { !items.contains($0) }

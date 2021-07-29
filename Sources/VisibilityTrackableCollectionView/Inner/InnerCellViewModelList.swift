@@ -39,8 +39,8 @@ extension VisibilityTrackableCollectionView {
         }
 
         func findInnerVisibilityTracker(
-            parent: VisibilityTrackableCollectionViewInterface?
-            , key: IndexPath
+            parent: VisibilityTrackableCollectionViewInterface?,
+            key: IndexPath
         ) -> (InnerVisibilityTrackerInterface, InnerViewModel)? {
             guard
                 let inner = inners.first(where: { $0.key == key }),
@@ -52,36 +52,13 @@ extension VisibilityTrackableCollectionView {
             return (innerCell, inner)
         }
         
-        func notiRefreshToInner(using parent: VisibilityTrackableCollectionViewInterface?) {
-            var removeItems: [InnerViewModel] = []
-            inners.forEach {
-                guard
-                    let cell = parent?.cellForItem(at: $0.key) as? InnerVisibilityTrackerInterface
-                else {
-                    $0.isNeedRefresh = true
-                    return
-                }
-                
-                cell.refreshSeenDataToInnerCollectionView()
-                $0.data.refreshSeenData()
-                removeItems.append($0)
-            }
-            
-            removeItems.forEach { removeInner(inner: $0) }
+        func findInnerVisibilityTracker(
+            using inner: InnerViewModel,
+            in parent: VisibilityTrackableCollectionViewInterface?
+        ) -> InnerVisibilityTrackerInterface? {
+            parent?.cellForItem(at: inner.key) as? InnerVisibilityTrackerInterface
         }
-        
-        private func removeInner(inner: InnerViewModel) {
-            inners = inners.filter { $0.key != inner.key }
-        }
-        
-        func reload(using parent: VisibilityTrackableCollectionViewInterface?, at key: IndexPath) {
-            guard let inner = inners.first(where: { $0.key == key }),
-                  let innerCell = parent?.cellForItem(at: inner.key) as? InnerVisibilityTrackerInterface
-            else { return }
-            
-            innerCell.configureInnerCollectionView(inner.data)
-        }
-        
+
     }
 
 }
