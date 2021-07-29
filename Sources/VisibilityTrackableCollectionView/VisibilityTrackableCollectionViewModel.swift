@@ -18,6 +18,7 @@ extension VisibilityTrackableCollectionView {
             
             case all(Data)
             case first(Data)
+            case infinite(Data)
         }
         
         var visibleState: ((FullyVisibleState) -> Void)?
@@ -34,11 +35,29 @@ extension VisibilityTrackableCollectionView {
             VisibleFooterItemManager()
         ]
         
+        private let infiniteVisibleItemManagers: [InfiniteVisibleItemManageable] = [
+            InfiniteVisibleCellItemManager(),
+            InfiniteVisibleHeaderItemManager(),
+            InfiniteVisibleFooterItemManager()
+        ]
+        
         func refreshSeenData() {
             visibleItemManagers.forEach { $0.refreshSeenData() }
-            innerViewModelLists.forEach { $0.refresh() }
+            infiniteVisibleItemManagers.forEach { $0.refreshSeenData() }
         }
         
+        func refreshSections(_ sections: [Int]) {
+            (visibleItemManagers + infiniteVisibleItemManagers).forEach {
+                $0.refreshSections(sections)
+            }
+        }
+        
+        func refreshInfiniteItems(type: VisibilityTrackableViewType) {
+            infiniteVisibleItemManagers
+                .first { $0.type == type }?
+                .refreshInifiniteItems()
+        }
+
         func reloadInner(
             type: VisibilityTrackableViewType,
             parent: VisibilityTrackableCollectionViewInterface?,
@@ -61,13 +80,29 @@ extension VisibilityTrackableCollectionView {
             }
         }
         
+        func notiRefreshToAllInners(parent: VisibilityTrackableCollectionViewInterface?, sections: [Int]) {
+            innerViewModelLists.forEach { innerViewModelList in
+                innerViewModelList.notiRefreshToInner(using: parent, sections: sections)
+            }
+        }
+
         func updateVisibleItems(current: VisibilityTrackableCollectionViewInterface) {
             visibleItemManagers.forEach {
                 visibleState?(.first($0.updateFullyVisibleItemsFirstAppeared(in: current)))
                 visibleState?(.all($0.updateFullyVisibleItems(in: current)))
             }
+            
+            infiniteVisibleItemManagers.forEach {
+                visibleState?(.infinite($0.updateFullyVisibleItemsFirstAppeared(in: current)))
+            }
         }
         
+        func setInfiniteScroll(infiniteItem: InfiniteItem, type: VisibilityTrackableViewType) {
+            infiniteVisibleItemManagers
+                .first { $0.type == type }?
+                .setInfiniteItem(infiniteItem)
+        }
+
         func findCurrentItems(_ type: VisibilityTrackableViewType) -> [IndexPath] {
             Array(visibleItemManagers.first(where: { $0.type == type })?.items ?? [])
         }
